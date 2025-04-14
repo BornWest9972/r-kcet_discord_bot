@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config(); 
 const token = process.env.Token;
+require('./server'); 
 
 
 
