@@ -13,7 +13,7 @@ app.get('/health', (req, res) => {
 const https = require('https');
 
 setInterval(() => {
-  https.get('https://r-kcet-discord-bot.koyeb.app/health', (res) => {
+  https.get('https://r-kcet-discord-bot.onrender.com/health', (res) => {
     console.log(`Self-ping status code: ${res.statusCode}`);
   }).on('error', (e) => {
     console.error(`Self-ping error: ${e.message}`);
