@@ -1,14 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const { REST, Routes } = require('discord.js');
-
 require('dotenv').config();
 
 const token = process.env.Token;
 const clientId = process.env.clientId;
-const guildIds = process.env.guildIds.split(','); // multiple guilds
 
-// Loading commands 
+// Load all command files
 const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -18,22 +16,19 @@ for (const file of commandFiles) {
   commands.push(command.data.toJSON());
 }
 
-// Deploy to each guild
+// Deploy globally
 const rest = new REST({ version: '10' }).setToken(token);
 
 (async () => {
   try {
-    console.log('Started refreshing application (/) commands.');
+    console.log('Started refreshing global application (/) commands.');
 
-    for (const guildId of guildIds) {
-      await rest.put(
-        Routes.applicationGuildCommands(clientId, guildId.trim()),
-        { body: commands }
-      );
-      console.log(`Successfully reloaded commands for guild ${guildId.trim()}`);
-    }
+    await rest.put(
+      Routes.applicationCommands(clientId),
+      { body: commands }
+    );
 
-    console.log('All guilds updated.');
+    console.log('Successfully reloaded global commands.');
   } catch (error) {
     console.error(error);
   }
